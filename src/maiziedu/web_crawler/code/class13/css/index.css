@@ -1,0 +1,46 @@
+body {
+  font-family: PingFang SC, microsoft yahei, STXihei, Arial, Helvetica Neue;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333333;
+  background-color: #ebeef2; }
+
+table, td, tr {
+  list-style: none; }
+
+.condition-item {
+  margin: 10px 0; }
+
+table {
+  padding-top: 20px; }
+  table tr {
+    display: block;
+    text-align: left;
+    border-bottom: 1px solid #bbb; }
+  table td, table th {
+    width: 100px; }
+  table .trigger {
+    color: blue;
+    padding: 0 3px;
+    cursor: pointer; }
+
+input, select, button {
+  width: 100px;
+  height: 20px;
+  line-height: 20px;
+  margin-left: 10px; }
+
+input {
+  border-radius: 5px;
+  border-style: none;
+  border: 1px solid #d2d2d2; }
+
+button {
+  height: 24px;
+  color: white;
+  border-style: solid;
+  border-radius: 6px;
+  background: #00abe4;
+  border: none; }
+
+/*# sourceMappingURL=index.css.map */

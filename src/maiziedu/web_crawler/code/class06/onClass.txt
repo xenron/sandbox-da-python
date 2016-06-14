@@ -1,0 +1,35 @@
+React
+
+数据的单向流动
+
+
+
+owner
+
+props
+
+子组件
+
+=====================
+
+State
+
+1.本组件内的数据
+2.相对封闭的单元/结构的数据 状态
+
+组件 无状态
+
+props
+
+
+1.组件之间的数据流动
+
+单向的， 从 owner向子组件
+
+
+owner  state ....{data}
+
+子组件1， property1={this.state.key1} state
+子组件2， property2={this.state.key2}
+子组件3， property3={this.state.key3}
+

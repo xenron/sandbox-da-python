@@ -1,0 +1,35 @@
+index.html
+
+file://.....
+
+
+
+http://127.0.0.1
+
+
+flux
+
+
+browsify
+webpack
+
+
+MVC  model view controller  
+
+mustache 
+data.name
+data.properties
+
+viewData.
+
+
+data
+ajax
+
+
+MVVM
+
+
+model view viewModel
+
+

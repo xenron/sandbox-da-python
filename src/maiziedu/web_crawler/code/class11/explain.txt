@@ -1,0 +1,28 @@
+<div className="first"><span>A Span</span></div>
+<div className="second"><p>A Paragraph</p></div>
+
+1. <div className="first"><span>A Span</span></div>
+
+2. className="first"  className="second"
+		<span>A Span</span> by <p>A Paragraph</p>
+
+3.<div className="second"><p>A Paragraph</p></div>
+
+流程:
+1.节点类型
+2.节点属性
+3.判断子节点。。。
+
+什么时候执行
+1.state  dirty state
+2.props
+
+
+<ul>
+	<li key='a'>A</li>
+	<li key='b'>B</li>
+</ul>
+
+<ul>
+	<li key='b'>B</li>
+</ul>

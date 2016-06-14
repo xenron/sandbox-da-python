@@ -1,0 +1,42 @@
+-- phpMyAdmin SQL Dump
+-- version 3.4.10.1
+-- http://www.phpmyadmin.net
+--
+-- 主机: localhost
+-- 生成日期: 2015 年 09 月 02 日 06:32
+-- 服务器版本: 5.5.20
+-- PHP 版本: 5.3.10
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- 数据库: `ippool`
+--
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `proxy`
+--
+
+CREATE TABLE IF NOT EXISTS `proxy` (
+  `IP` varchar(255) NOT NULL DEFAULT '',
+  `PORT` varchar(255) NOT NULL DEFAULT '',
+  `TYPE` varchar(255) DEFAULT NULL,
+  `GET_POST` varchar(255) DEFAULT NULL,
+  `POSITION` varchar(255) DEFAULT NULL,
+  `SPEED` varchar(255) DEFAULT NULL,
+  `LAST_CHECK_TIME` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`IP`,`PORT`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -1,0 +1,37 @@
+parent owner
+
+parent:
+
+<div>
+	<span>...</span>
+</div>
+
+<div>
+	<Hello />
+</div>
+
+<Hello />
+
+
+
+	<div>
+		<Msg onClick/>
+	</div>
+
+===================================
+
+Button
+
+	hover  hoverHandler
+	click  clickHandler
+	keydown ..
+	keyup ...
+
+	Button.changeState('keydown')
+
+	stateHandler(state){
+		this.setState(state)
+		dosomething();
+	}
+
+
