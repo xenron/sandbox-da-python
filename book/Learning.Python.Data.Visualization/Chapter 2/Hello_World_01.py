@@ -1,0 +1,1 @@
+print("Hello, World") #This will execute the quickest and fastest, but doesn't scale well in Python.
