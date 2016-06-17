@@ -1,0 +1,1 @@
+Michael A.Nielsen, "Neural Networks and Deep Learning", Detemination Press, 2015
