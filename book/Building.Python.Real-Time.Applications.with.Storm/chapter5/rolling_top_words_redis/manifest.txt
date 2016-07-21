@@ -1,0 +1,3 @@
+logconfig.ini
+setup.sh
+/home/barry/dev/Petrel/petrel/dist/petrel-0.9.4.0.3-py2.7.egg

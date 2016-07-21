@@ -1,0 +1,125 @@
+<html>
+  <head>
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <h1>Data Dashboard</h1>
+    <table>
+        <tr>
+            <td colspan="2"><h2>Distributions</h2></td>
+        </tr>
+        <tr>
+            <td>
+                <img src="{{ wcd }}" />
+            </td>
+            <td>
+                <img src="{{ lcb }}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Data Keys</h3>
+                <table>
+                    <tr>
+                        <th>Weather Conditions Value</th>
+                        <th>Meaning</th>
+                        <th>&nbsp;</th>
+                        <th>Light Conditions Value</th>
+                        <th>Meaning</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Fine no high winds</td>
+                        <td>&nbsp;</td>
+                        <td>1</td>
+                        <td>Daylight</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Raining no high winds</td>
+                        <td>&nbsp;</td>
+                        <td>4</td>
+                        <td>Darkness - lights lit</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Snowing no high winds</td>
+                        <td>&nbsp;</td>
+                        <td>5</td>
+                        <td>Darkness - lights unlit</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Fine + high winds</td>
+                        <td>&nbsp;</td>
+                        <td>6</td>
+                        <td>Darkness - no lighting</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Raining + high winds</td>
+                        <td>&nbsp;</td>
+                        <td>7</td>
+                        <td>Darkness - lighting unknown</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Snowing + high winds</td>
+                        <td>&nbsp;</td>
+                        <td>-1</td>
+                        <td>Data missing or out of range</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Fog or mist</td>
+                        <td colspan="3">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Other</td>
+                        <td colspan="3">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Unknown</td>
+                        <td colspan="3">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>-1</td>
+                        <td>Data missing or out of range</td>
+                        <td colspan="3">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        <tr>
+            <td>
+                <img src="{{ lcbwcb }}" />
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h2>Time Series Analysis</h2>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h3>Casualty Count Over Time</h3>
+                <img src="{{ cca }}" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h3>Casualty Count in 2000</h3>
+                <img src="{{ cc2 }}" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h3>Casualty Count in the 1980's</h3>
+                <img src="{{ cc1980 }}" />
+            </td>
+        </tr>
+
+  </body>
+</html>

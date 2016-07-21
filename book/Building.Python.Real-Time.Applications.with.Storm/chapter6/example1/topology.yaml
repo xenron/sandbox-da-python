@@ -1,0 +1,2 @@
+nimbus.host: "localhost"
+topology.workers: 1

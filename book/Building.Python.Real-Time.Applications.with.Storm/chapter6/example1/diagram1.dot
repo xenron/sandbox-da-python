@@ -1,0 +1,6 @@
+digraph data_flow {
+  "" [style=invisible]
+  "randomsentence.py" -> "splitsentence.py" [label="'the quick brown fox jumps over the lazy dog'"];
+  "splitsentence.py" -> "wordcount.py"  [label="'the', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog'"];
+  "wordcount.py" -> ""  [label="('the',2), ('quick',1), ('brown', 1), ('fox',1), ('jumps',1), ('over',1), ('lazy',1), ('dog',1)"];
+}
