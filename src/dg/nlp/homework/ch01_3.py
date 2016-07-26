@@ -8,3 +8,4 @@ def factorial_sum(begin, end):
 if __name__ == '__main__':
     print(factorial_sum(1, 4))
     print(factorial_sum(5, 10))
+
