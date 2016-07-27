@@ -1,0 +1,5 @@
+
+import os
+
+def greet():
+    print "Hi {}, you are awesome".format(os.environ.get( "USERNAME" ))

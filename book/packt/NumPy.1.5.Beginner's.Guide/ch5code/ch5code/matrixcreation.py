@@ -1,0 +1,11 @@
+#!/usr/bin/python
+
+import numpy
+
+A = numpy.mat('1 2 3; 4 5 6; 7 8 9')
+print "Creation from string", A
+print "transpose A", A.T
+print "Inverse A", A.I
+print "Check Inverse", A * A.I 
+
+print "Creation from array", numpy.mat(numpy.arange(9).reshape(3, 3))
