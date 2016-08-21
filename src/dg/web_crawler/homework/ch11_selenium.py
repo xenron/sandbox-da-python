@@ -1,41 +1,12 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Aug 13 23:21:21 2016
 
-@author: lenovo-pc
-"""
-
-# Ajax
+from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
-
-driver = webdriver.PhantomJS(
-    executable_path=r'D:/Program Files/phantomjs-2.1.1-windows/phantomjs-2.1.1-windows/bin/phantomjs')
-driver.get("http://pythonscraping.com/pages/javascript/ajaxDemo.html")
-# driver.page_source
-time.sleep(3)
-print(driver.find_element_by_id("content").text)
-driver.close()
-
-# 检查页面是否加载完毕
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-driver = webdriver.PhantomJS(
-    executable_path=r'D:/Program Files/phantomjs-2.1.1-windows/phantomjs-2.1.1-windows/bin/phantomjs')
-driver.get("http://pythonscraping.com/pages/javascript/ajaxDemo.html")
-try:
-    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "loadedButton")))
-finally:
-    print(driver.find_element_by_id("content").text)
-    driver.close()
-
-# 重定向
-from selenium import webdriver
-import time
-from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import StaleElementReferenceException
+
+# 查找python相关图书
+url = "http://search.jd.com/Search?keyword=Python&enc=utf-8"
 
 
 def waitForLoad(driver):
@@ -53,8 +24,34 @@ def waitForLoad(driver):
             return
 
 
-driver = webdriver.PhantomJS(
-    executable_path=r'D:/Program Files/phantomjs-2.1.1-windows/phantomjs-2.1.1-windows/bin/phantomjs')
-driver.get("http://pythonscraping.com/pages/javascript/redirectDemo1.html")
-waitForLoad(driver)
-print(driver.page_source)
+def parse_info_from_soup(bs):
+    # 查找所有class为"gl-item"，标签名为li的标签
+    items = bs.find_all("li", class_="gl-item")
+    # 遍历所有标签
+    for item in items:
+        # 名称
+        # 查找class为"p-name",标签名为div的标签，并查找em内容
+        name = item.find("div", class_="p-name").find("em")
+        # 价格
+        price = item.find("div", class_="p-price").find("i")
+        # 出版社
+        # book_detail = item.find("span", class_="p-bi-store").find("a")
+        # 评论人数
+        # commit = item.find("div", class_="p-commit").find("a")
+        print(name.text, price.text)
+        # print(name.text, book_detail.text, price.text, commit.text)
+    # print(len(items))
+
+
+def main():
+    driver = webdriver.PhantomJS(executable_path=r'D:/ProtableSoft/phantomjs-2.1.1-windows/bin/phantomjs')
+    driver.get(url)
+    waitForLoad(driver)
+    bs = BeautifulSoup(driver.page_source)  # 将页面信息转换为BeautifulSoup对象
+    parse_info_from_soup(bs)  # 从页面中提取信息
+    # print(driver.page_source)
+
+
+if __name__ == "__main__":
+    main()
+    # IOLoop.instance().run_sync(main1)
