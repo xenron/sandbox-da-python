@@ -5,9 +5,12 @@ from nltk.corpus import *
 from matplotlib import pylab
 from nltk import word_tokenize
 import re
+import jieba
+import jieba.posseg
+import jieba.analyse
 
 # http://bi.dataguru.cn/article-9776-1.html
-s="""
+s='''
 你一定听过Google Brain，也一定使用过Google Photos和Gmail等产品，并且赞叹这些软件竟然能读懂自己的照片，理解自己的语言。其实在它们背后都有人工智能技术的影子。Google曾经是一家搜索公司，但现在的它更像是一家人工智能公司。这其中的转变是如何发生的，又有怎么样的故事呢？
 如果你想把人工智能注入你的每一个产品中，你需要培训一支精于此道的程序员团队。
 每一个Googler都会机器学习？
@@ -62,8 +65,27 @@ Giannandrea 表示，当谷歌首次提供 TensorFlow 课程时，共有 7.5 万
 她的课程最初是一个为期 4 周的新兵训练营，由 Google 最先进的人工智能项目产品负责人提供指导，教给他们如何将机器学习融入项目中。“我们把忍者带进会议室，Greg Corrado 站在白板前解释 LSTM(长短期记忆，神经网络模型的一种)。他做着夸张的手势，讲述这种系统的工作方式、利用何种数学原理、如何应用于实际。”Robson 说，“在最初的4个星期里，我们几乎用到了我们的所有技术和所有工具，为的是给他们带来切身体会”。
 如今，Holgate 从新兵训练营毕业了，她现在正在使用机器学习工具开发一款 Android 通讯工具，帮助谷歌员工彼此交流。她正在调整超参数，清理输入数据，去掉停止词。经历了这一切，她已经不再回头，因为前面是人工智能的光明大道，这是 Google 的未来，是一切的技术核心，甚至决定了公司的一切。
 “机器学习”，她说，“这个领域大有可为”。
-"""
+'''
 
+def stemming_words(word):
+    # 全模式
+    seg_list = jieba.cut(word, cut_all=True)
+    print("Full Mode:", "/ ".join(seg_list))
+    # 精确模式
+    seg_list = jieba.cut(word, cut_all=False)
+    print("Default Mode:", "/ ".join(seg_list))
+    # 搜索引擎模式
+    seg_list = jieba.cut_for_search(word)
+    print(", ".join(seg_list))
+
+def get_key_words(word):
+    for x, w in jieba.analyse.extract_tags(word, topK=10, withWeight=True):
+        print('%s %s' % (x, w))
 
 if __name__ == '__main__':
+    print("\n========= start =========")
+    print("\n========= stemming_words =========")
+    stemming_words(s)
+    print("\n========= get_key_words =========")
+    get_key_words(s)
     print("\n========= finish =========")
