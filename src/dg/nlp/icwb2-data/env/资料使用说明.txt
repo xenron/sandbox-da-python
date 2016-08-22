@@ -1,0 +1,57 @@
+1) 介绍（Introduction）：
+　　本目录包含了训练集（training）、测试集（test）及测试集的（黄金）标准切分（gold），同时也包括了一个用于评分的脚本和一个可以作为基线测试的简单中文分词器（script中）。(This directory contains the training, test, and gold-standard data used in the 2nd International Chinese Word Segmentation Bakeoff. Also included is the script used to score the results submitted by the bakeoff participants and the simple segmenter used to generate the baseline and topline data.)
+
+2) 文件列表（File List）
+　　在gold目录里包含了测试集标准切分及从训练集中抽取的词表（Contains the gold standard segmentation of the test data along with the training data word lists.）
+　　在scripts目录里包含了评分脚本和简单中文分词器（Contains the scoring script and simple segmenter.）
+　　在testing目录里包含了未切分的测试数据（Contains the unsegmented test data.）
+　　在training目录里包含了已经切分好的标准训练数据（Contains the segmented training data.）
+　　在doc目录里包括了bakeoff的一些指南（Contains the instructions used in the bakeoff.）
+
+3) 编码（Encoding Issues）
+　　文件包括扩展名”.utf8”则其编码为UTF-8(Files with the extension “.utf8” are encoded in UTF-8 Unicode.)
+　　文件包括扩展名”.txt”则其编码分别为（Files with the extension “.txt” are encoded as follows）:
+　　前缀为as_，代表的是台湾中央研究院提供，编码为Big Five (CP950)；
+　　前缀为hk_，代表的是香港城市大学提供，编码为Big Five/HKSCS；
+　　前缀为msr_，代表的是微软亚洲研究院提供，编码为 EUC-CN (CP936)；
+　　前缀为pku_，代表的北京大学提供，编码为EUC-CN (CP936)；
+　　EUC-CN即是GB2312（EUC-CN is often called “GB” or “GB2312” encoding, though technically GB2312 is a character set, not a character encoding.）
+
+4） 评分（Scoring）
+　　评分脚本“score”是用来比较两个分词文件的，需要三个参数（The script ‘score’ is used to generate compare two segmentations. The script takes three arguments)：
+　　1. 训练集词表（The training set word list）
+　　2. “黄金”标准分词文件（The gold standard segmentation）
+　　3. 测试集的切分文件（The segmented test file）
+　
+　　以下利用其自带的中文分词工具进行说明。在scripts目录里包含一个基于最大匹配法的中文分词器mwseg.pl，以北京大学提供的人民日报语料库为例，用法如下（在cmd窗口中运行，设置到当前文目录，其中dw为简易分词器脚本）：
+　　python dw.py pku_training.utf8 pku_test.utf8 pku_result.utf8
+　　其中第一个参数需提供一个词表文件pku_training_word.txt，输入为pku_test.txt，输出为pku_test_seg.txt。
+　　利用score评分的命令如下（注意，以下命令需要所有文件在同一目录）：
+　　 perl score pku_training.utf8 pku_test_gold.utf8 pku_result.utf8 > score.utf8
+　　其中前三个参数已介绍，而score.txt则包含了详细的评分结果，不仅有总的评分结果，还包括每一句的对比结果。这里只看最后的总评结果：
+
+…
+=== SUMMARY:
+=== TOTAL INSERTIONS:	4623
+=== TOTAL DELETIONS:	1740
+=== TOTAL SUBSTITUTIONS:	6650
+=== TOTAL NCHANGE:	13013
+=== TOTAL TRUE WORD COUNT:	104372
+=== TOTAL TEST WORD COUNT:	107255
+=== TOTAL TRUE WORDS RECALL:	0.920
+=== TOTAL TEST WORDS PRECISION:	0.895
+=== F MEASURE:	0.907
+=== OOV Rate:	0.940
+=== OOV Recall Rate:	0.917
+=== IV Recall Rate:	0.966
+###	pku_result.utf8	4623	1740	6650	13013	104372	107255	0.920	0.895	0.907	0.940	0.917	0.966
+
+　　说明这个中文分词器在北大提供的语料库上的测试结果是：召回率为92.0%，准确率为89.5%，F值为90.7%等。
+
+关于评分脚本score的使用注意事项：
+1.该脚本以perl语言编写，需要先按照perl
+2. 若在windows下运行，请先安装GNU diffutils
+（1）将score脚本中的$diff = "/usr/bin/diff"; diff变量改为GNU diffutils的安装目录
+如 $diff = "D:/GnuWin32/bin/diff.exe"; 
+注意：安装目录中不能含有空格！
+（2）将tmp1和tmp2变量更改为 $tmp1 = "comp01";$tmp2 = "comp02$$";
