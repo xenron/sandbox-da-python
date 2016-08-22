@@ -66,17 +66,4 @@ Giannandrea 表示，当谷歌首次提供 TensorFlow 课程时，共有 7.5 万
 
 
 if __name__ == '__main__':
-    print("\n========= question02 =========")
-    question02()
-    print("\n========= question06 =========")
-    question06()
-    print("\n========= question17 =========")
-    question17()
-    print("\n========= question24 =========")
-    # reads in a text
-    f = open('../data/corpus.txt')
-    raw = f.read()
-    # lower cases the text
-    raw = raw.lower()
-    print(question24(raw))
     print("\n========= finish =========")
