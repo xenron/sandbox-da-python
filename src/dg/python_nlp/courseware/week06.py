@@ -4,14 +4,16 @@ import nltk
 from nltk.tag import pos_tag
 from nltk.tokenize import word_tokenize
 
+####################################################################
+####################################################################
+####################################################################
 
-
-#词性标注器
+# 词性标注器
 text = word_tokenize("And now for something completely different")
 print pos_tag(text)
 
 text = word_tokenize("They refuse to permit us to obtain the refuse permit")
-pos_tag(text)
+print pos_tag(text)
 
 text = nltk.Text(word.lower() for word in nltk.corpus.brown.words())
 text.similar('woman')
@@ -19,7 +21,7 @@ text.similar('bought')
 text.similar('over')
 text.similar('the')
 
-#标注语料库
+# 标注语料库
 tagged_token = nltk.tag.str2tuple('fly/NN')
 tagged_token
 print tagged_token[0]
@@ -52,47 +54,55 @@ print nltk.corpus.mac_morpho.tagged_words()
 print nltk.corpus.conll2002.tagged_words()
 print nltk.corpus.cess_cat.tagged_words()
 
+# 常见词性
 from nltk.corpus import brown
 brown_news_tagged = brown.tagged_words(categories='news', tagset='universal')
 tag_fd = nltk.FreqDist(tag for (word, tag) in brown_news_tagged)
 tag_fd.most_common()
 tag_fd.plot()
 
-#名词
+# 出现在名词前面的词性排列
 word_tag_pairs = list(nltk.bigrams(brown_news_tagged))
 nltk.FreqDist(a[1] for (a, b) in word_tag_pairs if b[1] == 'NOUN').most_common()
 
-#动词
+# 出现在名词后面的词性排列
+# word_tag_pairs = list(nltk.bigrams(brown_news_tagged))
+# nltk.FreqDist(a[1] for (a, b) in word_tag_pairs if b[0] == 'NOUN').most_common()
+
+# 最常见的动词
 wsj = list(nltk.corpus.treebank.tagged_words(tagset='universal'))
 word_tag_fd = nltk.FreqDist(wsj).most_common()
 [wordtag[0] + "/" + wordtag[1] for (wordtag, fred) in word_tag_fd if wordtag[1].startswith('VERB')][:50]
 
+# 条件概率分布
 cfd1 = nltk.ConditionalFreqDist(wsj)
 cfd1['yield'].keys()
 cfd1['cut'].keys()
 
+# 某种特定词性出现概率
 cfd2 = nltk.ConditionalFreqDist((tag, word) for (word, tag) in wsj)
 cfd2['PRT'].most_common(10)
 
-#未简化标记
+# 未简化标记
 def findtags(tag_prefix, tagged_text):
     cfd = nltk.ConditionalFreqDist((tag, word) for (word, tag) in tagged_text if tag.startswith(tag_prefix))
     return dict((tag, cfd[tag].keys()[:5]) for tag in cfd.conditions())
-    
+
 tagdict = findtags('NN', brown.tagged_words(categories='news'))
 for tag in sorted(tagdict):
     print tag, tagdict[tag]
 
-#搜索已标注的语料库
+# 搜索已标注的语料库
+# often后面出现频率最高的词性
 brown_learned_text = nltk.corpus.brown.tagged_words(categories='learned')
 sorted(set(b[0] for (a, b) in list(nltk.bigrams(brown_learned_text)) if a[0] == 'often'))
-
 
 brown_lrnd_tagged = nltk.corpus.brown.tagged_words(tagset='universal')
 tags = [b[1] for (a, b) in list(nltk.bigrams(brown_lrnd_tagged)) if a[0] == 'often']
 fd = nltk.FreqDist(tags)
 fd.tabulate()
 
+# 查找动词 TO 动词
 from nltk.corpus import brown
 def process(sentence):
     for (w1,t1), (w2,t2), (w3,t3) in nltk.trigrams(sentence): 
@@ -100,33 +110,36 @@ def process(sentence):
             print w1, w2, w3 
 for tagged_sent in brown.tagged_sents():
     process(tagged_sent)
-    
-    
+
+
 brown_news_tagged = brown.tagged_words(categories='news', tagset='universal')
-data = nltk.ConditionalFreqDist((word.lower(), tag)
-                                for (word, tag) in brown_news_tagged)
+data = nltk.ConditionalFreqDist((word.lower(), tag) for (word, tag) in brown_news_tagged)
 for word in data.conditions():
     if len(data[word]) > 3:
         tags = data[word].keys()
         print word, ' '.join(tags)
-        
-####自动标记####
-#默认标注器
-from nltk.corpus  import brown
-brown_tagged_sents=brown.tagged_sents(categories='news')  
+
+####################################################################
+####################################################################
+####################################################################
+
+#### 自动标记 ####
+# 默认标注器
+from nltk.corpus import brown
+brown_tagged_sents=brown.tagged_sents(categories='news')
 brown_sents = brown.sents(categories='news')
-     
+
 tags = [tag for (word, tag) in brown.tagged_words(categories='news')]
-nltk.FreqDist(tags).max()    
+nltk.FreqDist(tags).max()
 
 raw = 'I do not like green eggs and ham, I do not like them Sam I am!'
 tokens = nltk.word_tokenize(raw)
 default_tagger = nltk.DefaultTagger('NN')
-default_tagger.tag(tokens)   
+default_tagger.tag(tokens)
 
 default_tagger.evaluate(brown.tagged_sents(categories='news'))
- 
-#正则表达式标注器
+
+# 正则表达式标注器
 patterns = [
     (r'.*ing$', 'VBG'), # gerunds
     (r'.*ed$', 'VBD'), # simple past
@@ -142,7 +155,7 @@ regexp_tagger.tag(brown.sents()[3])
 
 regexp_tagger.evaluate(brown.tagged_sents(categories='news'))
 
-#查询标注器
+# 查询标注器
 fd = nltk.FreqDist(brown.words(categories='news'))
 cfd = nltk.ConditionalFreqDist(brown.tagged_words(categories='news'))
 most_freq_words = fd.most_common()[:100]
@@ -159,7 +172,7 @@ def performance(cfd, wordlist):
     lt = dict((word, cfd[word].max()) for word in wordlist)
     baseline_tagger = nltk.UnigramTagger(model=lt, backoff=nltk.DefaultTagger('NN'))
     return baseline_tagger.evaluate(brown.tagged_sents(categories='news'))
-    
+
 def display():
     import pylab
     words_by_freq = list(nltk.FreqDist(brown.words(categories='news')))
@@ -174,8 +187,12 @@ def display():
 
 display()
 
-####N-gram标注####
-#一元模型
+####################################################################
+####################################################################
+####################################################################
+
+#### N-gram标注 ####
+# 一元模型
 from nltk.corpus import brown
 brown_tagged_sents = brown.tagged_sents(categories='news')
 brown_sents = brown.sents(categories='news')
@@ -183,7 +200,7 @@ unigram_tagger = nltk.UnigramTagger(brown_tagged_sents)
 print unigram_tagger.tag(brown_sents[2007])
 print unigram_tagger.evaluate(brown_tagged_sents)
 
-#分离训练与测试数据
+# 分离训练与测试数据
 size = int(len(brown_tagged_sents) * 0.9)
 print size
 train_sents = brown_tagged_sents[:size]
@@ -191,7 +208,7 @@ test_sents = brown_tagged_sents[size:]
 unigram_tagger = nltk.UnigramTagger(train_sents)
 unigram_tagger.evaluate(test_sents)
 
-#一般N-gram标注
+# 一般N-gram标注
 bigram_tagger = nltk.BigramTagger(train_sents)
 bigram_tagger.tag(brown_sents[2007])
 
@@ -200,13 +217,13 @@ bigram_tagger.tag(unseen_sent)
 
 bigram_tagger.evaluate(test_sents)
 
-#组合标注器
+# 组合标注器
 t0 = nltk.DefaultTagger('NN')
 t1 = nltk.UnigramTagger(train_sents, backoff=t0)
 t2 = nltk.BigramTagger(train_sents, backoff=t1)
 t2.evaluate(test_sents)
 
-#储存标注器
+# 储存标注器
 from cPickle import dump
 output = open('t2.pkl', 'wb')
 dump(t2, output, -1)
@@ -222,7 +239,7 @@ text = """The board's action shows what free enterprise
 tokens = text.split()
 tagger.tag(tokens)
 
-#性能限制
+# 性能限制
 cfd = nltk.ConditionalFreqDist(
     ((x[1], y[1], z[0]), z[1])
     for sent in brown_tagged_sents
@@ -235,7 +252,7 @@ test_tags = [tag for sent in brown.sents(categories='editorial')
 gold_tags = [tag for (word, tag) in brown.tagged_words(categories='editorial')]
 print(nltk.ConfusionMatrix(gold_tags, test_tags))
 
-#跨句子边界标注
+# 跨句子边界标注
 brown_tagged_sents = brown.tagged_sents(categories='news')
 brown_sents = brown.sents(categories='news')
 size = int(len(brown_tagged_sents) * 0.9)
@@ -246,3 +263,6 @@ t1 = nltk.UnigramTagger(train_sents, backoff=t0)
 t2 = nltk.BigramTagger(train_sents, backoff=t1)
 t2.evaluate(test_sents)
 
+####################################################################
+####################################################################
+####################################################################
