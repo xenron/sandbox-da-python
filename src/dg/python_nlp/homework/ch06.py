@@ -28,25 +28,6 @@ baseline_tagger.evaluate(brown_tagged_sents)
 # how,you两个单词在高频100单词中未出现，所以没有被标记出来
 baseline_tagger.tag([u'how', u'are',u'you'])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # 20. ◑ Write code to search the Brown Corpus for particular words and phrases according to tags, to answer the following questions:
 # a. Produce an alphabetically sorted list of the distinct words tagged as MD.
 # b. Identify words that can be plural nouns or third person singular verbs (e.g., deals, flies).
