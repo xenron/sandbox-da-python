@@ -6,6 +6,7 @@ Created on Wed Jul 27 13:50:43 2016
 """
 
 import nltk
+nltk.download('panlex_lite')
 nltk.download()
 
 # text1: Moby Dick by Herman Melville 1851
