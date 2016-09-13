@@ -22,7 +22,7 @@ from sklearn.feature_extraction.text import HashingVectorizer
 corpus = []
     
 #读取预料 一行预料为一个文档
-for line in open('d:/data/01_All_BHSpider_Content_Result.txt', 'r').readlines():
+for line in open('d:/tmp/01_All_BHSpider_Content_Result.txt', 'r').readlines():
     #print line
     corpus.append(line.strip())
 #print corpus
