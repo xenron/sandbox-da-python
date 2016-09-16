@@ -33,8 +33,8 @@ aapl_stock.columns =['price']
 #close_px['diff'] = close_px.diff()
 #df_yesterday = DataFrame(data=close_px[:-1], index=close_px.index.values)
 #previous_price = close_px.shift(1)
+aapl_stock['previous']=aapl_stock.shift(1)
 aapl_stock['log_price']=np.log(aapl_stock['price'])
-aapl_stock['previous']=close_px.shift(1)
 aapl_stock['ret']=ret(aapl_stock['price'], aapl_stock['previous'])
 aapl_stock['log_ret']=log_ret(aapl_stock['price'],aapl_stock['previous'])
 
