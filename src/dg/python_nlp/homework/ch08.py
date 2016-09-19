@@ -22,8 +22,8 @@ import jieba.analyse
 corpus = []
     
 #读取预料 一行预料为一个文档
-texts=pd.read_csv('d:/tmp/train.csv',encoding="gb18030")
-# texts=pd.read_csv('d:/tmp/train.csv',encoding="utf-8")
+# texts=pd.read_csv('d:/tmp/train.csv',encoding="gb18030")
+texts=pd.read_csv('d:/tmp/train.csv',encoding="utf-8")
 texts['label']=texts['type']
 #label_dict = pd.unique(texts['type'])
 #label_dict.to_dict()
