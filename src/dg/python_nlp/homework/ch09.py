@@ -21,7 +21,9 @@ import nltk
 
 textchunk = [("many", "JJ"), ("researchers", "NNS"), ("two", "CD"), ("weeks", "NNS"), ("both","DT"), ("new", "JJ"), ("positions", "NNS")]
 corpus = nltk.RegexpParser("NP:{<DT>?<CD>?<JJ>*<NNS>}")
-corpus.parse(textchunk).draw()
+result = corpus.parse(textchunk)
+print result
+result.draw()
 
 #6. ◑ Write one or more tag patterns to handle coordinated noun phrases, e.g., July/
 #NNP and/CC August/NNP, all/DT your/PRP$ managers/NNS and/CC supervisors/NNS,
@@ -32,7 +34,10 @@ corpus.parse(textchunk).draw()
 
 textchunk = [("July","NNP"), ("and","CC"), ("August","NNP"), ("all", "DT"), ("your", "PRP$"), ("managers", "NNS"), ("and", "CC"), ("supervisors", "NNS"), ("company","NN"), ("courts","NNS"), ("and","CC"), ("adjudicators","NNS")]
 corpus = nltk.RegexpParser(" Coordinated noun: {<NNP><CC><NNP>|<DT><PRP\$><NNS><CC><NNS>|<NN><NNS><CC><NNS>}")
-corpus.parse(textchunk).draw()
+result = corpus.parse(textchunk)
+print result
+result.draw()
+
 
 #7. ◑ Carry out the following evaluation tasks for any of the chunkers you have developed
 #earlier. (Note that most chunking corpora contain some internal inconsistencies,
@@ -50,9 +55,43 @@ corpus.parse(textchunk).draw()
 #错误，并讨论它。
 #c. 与本章的评估部分讨论的基准分块器比较你的分块器的性能。
 
+from nltk.corpus import conll2000
+test_sents = conll2000.chunked_sents('test.txt', chunk_types=['NP'])[:100]
+print len(test_sents)
 
+# 不使用语法规则的分快器
+cp = nltk.RegexpParser("")
+print cp.evaluate(test_sents)
 
+cp = nltk.RegexpParser('CHUNK: {<V.*> <TO> <V.*>}')
+print cp.evaluate(test_sents)
 
+cp = nltk.RegexpParser('NP: {<NN>+}')
+print cp.evaluate(test_sents)
+
+grammar = r"NP: {<[CDJNP].*>+}"
+cp = nltk.RegexpParser(grammar)
+print cp.evaluate(test_sents)
+
+#使用unigram标注器对名词短语分块
+class UnigramChunker(nltk.ChunkParserI):
+    def __init__(self, train_sents): 
+        train_data = [[(t,c) for w,t,c in nltk.chunk.tree2conlltags(sent)]
+                        for sent in train_sents]
+        self.tagger = nltk.UnigramTagger(train_data) 
+        
+    def parse(self, sentence): 
+        pos_tags = [pos for (word,pos) in sentence]
+        tagged_pos_tags = self.tagger.tag(pos_tags)
+        chunktags = [chunktag for (pos, chunktag) in tagged_pos_tags]
+        conlltags = [(word, pos, chunktag) for ((word,pos),chunktag)
+                        in zip(sentence, chunktags)]
+        return nltk.chunk.conlltags2tree(conlltags)
+
+test_sents = conll2000.chunked_sents('test.txt', chunk_types=['NP'])
+train_sents = conll2000.chunked_sents('train.txt', chunk_types=['NP'])
+unigram_chunker = UnigramChunker(train_sents)
+print unigram_chunker.evaluate(test_sents)
 
 #17. ● An n-gram chunker can use information other than the current part-of-speech
 #tag and the n-1 previous chunk tags. Investigate other models of the context, such
