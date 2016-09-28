@@ -1,82 +1,23 @@
 # -*- coding: utf-8 -*-
 
+# stock_dji.csv(见百度云盘)包含了道琼斯指数的23个成分股数据，dji.csv 道琼斯股票数据
+# 使用成分股数据构建出PCA指数，并与道琼斯指数进行比较
 
-#协方差矩阵
+# 构造PCA指数
 import numpy as np
-X = [[2, 0, -1.4],
-[2.2, 0.2, -1.5],
-[2.4, 0.1, -1],
-[1.9, 0, -1.2]]
-print(np.cov(np.array(X).T))
-
-#特征值与特征向量
-w, v = np.linalg.eig(np.array([[1, -2], [2, -3]]))
-print('特征值：{}\n特征向量：{}'.format(w,v))
-
-#使用PCA降维
 import pandas as pd
-x1=[0.9,2.4,1.2,0.5,0.3,1.8,0.5,0.3,2.5,1.3]
-x2=[1,2.6,1.7,0.7,0.7,1.4,0.6,0.6,2.6,1.1]
-data=pd.DataFrame([x1,x2],index=['x1','x2'])
-
-
-data_new=(data.T-np.mean(data,axis=1)).T
-
-a, b = np.linalg.eig(np.cov(data_new))
-
-np.dot(data_new.T,b[:,0])
-
-
-#鸢尾花数据集的降维
-%matplotlib inline
+# %matplotlib inline
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
-from sklearn.datasets import load_iris
-
-data = load_iris()
-y = data.target
-X = data.data
-pca = PCA(n_components=2)
-reduced_X = pca.fit_transform(X)
-
-red_x, red_y = [], []
-blue_x, blue_y = [], []
-green_x, green_y = [], []
-for i in range(len(reduced_X)):
-    if y[i] == 0:
-        red_x.append(reduced_X[i][0])
-        red_y.append(reduced_X[i][1])
-    elif y[i] == 1:
-        blue_x.append(reduced_X[i][0])
-        blue_y.append(reduced_X[i][1])
-    else:
-        green_x.append(reduced_X[i][0])
-        green_y.append(reduced_X[i][1])
-plt.scatter(red_x, red_y, c='r', marker='x')
-plt.scatter(blue_x, blue_y, c='b', marker='D')
-plt.scatter(green_x, green_y, c='g', marker='.')
-plt.show()
-
-###构造PCA指数
-import pandas as pd
 from datetime import datetime 
-import matplotlib.pyplot as plt
 from sklearn.decomposition import KernelPCA
-import pandas_datareader.data as web
 
-symbols = ['ADS.DE', 'ALV.DE', 'BAS.DE', 'BAYN.DE', 'BEI.DE',
-           'BMW.DE', 'CBK.DE', 'CON.DE', 'DAI.DE', 'DB1.DE',
-           'DBK.DE', 'DPW.DE', 'DTE.DE', 'EOAN.DE', 'FME.DE',
-           'FRE.DE', 'HEI.DE', 'HEN3.DE', 'IFX.DE', 'LHA.DE',
-           'LIN.DE', 'LXS.DE', 'MRK.DE', 'MUV2.DE', 'RWE.DE',
-           'SAP.DE', 'SDF.DE', 'SIE.DE', 'TKA.DE', 'VOW3.DE',
-           '^GDAXI']
-           
-get_ipython().run_cell_magic(u'time', u'', u"data = pd.DataFrame()\nfor sym in symbols:\n    data[sym] = web.DataReader(sym, data_source='yahoo')['Close']\ndata = data.dropna()")
+data = pd.read_csv('d:/tmp/stock_dji.csv', parse_dates=True, index_col=0)
+data_DJI = pd.read_csv('d:/tmp/DJI.csv', parse_dates=True, index_col=0)
+dax = data_DJI[data_DJI.index.isin(data.index)]
 
-dax = pd.DataFrame(data.pop('^GDAXI'))           
-
-data[data.columns[:6]].head()
+data.head()
+dax.head()
 
 scale_function = lambda x: (x - x.mean()) / x.std()
 
