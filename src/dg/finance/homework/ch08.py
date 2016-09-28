@@ -57,35 +57,35 @@ mpl_dates
 
 
 plt.figure(figsize=(8, 4))
-plt.scatter(dax['PCA_5'], dax['^GDAXI'], c=mpl_dates)
+plt.scatter(dax['PCA_5'], dax['Open'], c=mpl_dates)
 lin_reg = np.polyval(np.polyfit(dax['PCA_5'],
-                                dax['^GDAXI'], 1),
+                                dax['Open'], 1),
                                 dax['PCA_5'])
 plt.plot(dax['PCA_5'], lin_reg, 'r', lw=3)
 plt.grid(True)
 plt.xlabel('PCA_5')
-plt.ylabel('^GDAXI')
+plt.ylabel('Open')
 plt.colorbar(ticks=mpl.dates.DayLocator(interval=250),
                 format=mpl.dates.DateFormatter('%d %b %y'))
                 
 cut_date = '2011/7/1'
 early_pca = dax[dax.index < cut_date]['PCA_5']
 early_reg = np.polyval(np.polyfit(early_pca,
-                dax['^GDAXI'][dax.index < cut_date], 1),
+                dax['Open'][dax.index < cut_date], 1),
                 early_pca)
 
 late_pca = dax[dax.index >= cut_date]['PCA_5']
 late_reg = np.polyval(np.polyfit(late_pca,
-                dax['^GDAXI'][dax.index >= cut_date], 1),
+                dax['Open'][dax.index >= cut_date], 1),
                 late_pca)
 
 
 plt.figure(figsize=(8, 4))
-plt.scatter(dax['PCA_5'], dax['^GDAXI'], c=mpl_dates)
+plt.scatter(dax['PCA_5'], dax['Open'], c=mpl_dates)
 plt.plot(early_pca, early_reg, 'r', lw=3)
 plt.plot(late_pca, late_reg, 'r', lw=3)
 plt.grid(True)
 plt.xlabel('PCA_5')
-plt.ylabel('^GDAXI')
+plt.ylabel('Open')
 plt.colorbar(ticks=mpl.dates.DayLocator(interval=250),
                 format=mpl.dates.DateFormatter('%d %b %y'))                
