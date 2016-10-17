@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# 利用2015xxxx文件夹中的原始汇总数据，构建出站点的上下班时间段进站日均人数、上下班时间段出站日均人数、非上下班时间段进站日均人数、非上下班时间段出站日均人数 四个变量。
+# 对这四个变量进行聚类分析
+
 #读取数据
 import pandas as pd
 data=pd.read_excel(u'd:/data/example02/sample.xls',index_col=u'站点编号')
