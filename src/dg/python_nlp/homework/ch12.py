@@ -11,8 +11,41 @@
 # 元素。（提示：使用Element('cv')创建新的cv 字段，分配给它一个文本值，然后使用
 # 父元素的insert()方法。）
 
+import re
+import nltk
+from nltk.etree.ElementTree import SubElement
+from nltk.corpus import toolbox
 
+def cv(s):
+    s = s.lower()
+    s = re.sub(r'[^a-z]', r'_', s)
+    s = re.sub(r'[aeiou]', r'V', s)
+    s = re.sub(r'[^V_]', r'C', s)
+    return (s)
+def add_cv_field(entry):
+    for field in entry:
+        if field.tag == 'lx':
+            cv_field = SubElement(entry, 'cv')
+            cv_field.text = cv(field.text)
+lexicon = toolbox.xml('rotokas.dic')
+add_cv_field(lexicon[53])
 
+print nltk.to_sfm_string(lexicon[53])
+
+# \lx kaeviro
+# \ps V
+# \pt A
+# \ge lift off
+# \ge take off
+# \tkp go antap
+# \sc MOTION
+# \vx 1
+# \nt used to describe action of plane
+# \dt 03/Jun/2005
+# \ex Pita kaeviroroe kepa kekesia oa vuripierevo kiuvu.
+# \xp Pita i go antap na lukim haus win i bagarapim.
+# \xe Peter went to look at the house that the wind destroyed.
+# \cv CVVCVCV
 
 # 4. Write a program to find any parts-of-speech (ps field) that occurred less than 10
 # times. Perhaps these are typing mistakes?
