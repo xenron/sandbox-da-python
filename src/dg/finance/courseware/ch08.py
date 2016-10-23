@@ -57,7 +57,10 @@ plt.scatter(blue_x, blue_y, c='b', marker='D')
 plt.scatter(green_x, green_y, c='g', marker='.')
 plt.show()
 
-###构造PCA指数
+#########################################################
+#########################################################
+#########################################################
+### 构造PCA指数
 import pandas as pd
 from datetime import datetime 
 import matplotlib.pyplot as plt
@@ -74,47 +77,51 @@ symbols = ['ADS.DE', 'ALV.DE', 'BAS.DE', 'BAYN.DE', 'BEI.DE',
            
 get_ipython().run_cell_magic(u'time', u'', u"data = pd.DataFrame()\nfor sym in symbols:\n    data[sym] = web.DataReader(sym, data_source='yahoo')['Close']\ndata = data.dropna()")
 
-dax = pd.DataFrame(data.pop('^GDAXI'))           
+dax = pd.DataFrame(data.pop('^GDAXI'))
 
 data[data.columns[:6]].head()
 
+# 标准化数据集
 scale_function = lambda x: (x - x.mean()) / x.std()
 
+# 不限制主成分
 pca = KernelPCA().fit(data.apply(scale_function))
-
 len(pca.lambdas_)
-
+# 方差前十位
 pca.lambdas_[:10].round()
 
+# 方差贡献率，数据变异性
 get_we = lambda x: x / x.sum()
-
 get_we(pca.lambdas_)[:10]
-
 get_we(pca.lambdas_)[:5].sum()
 
+# 1个主成分
 pca = KernelPCA(n_components=1).fit(data.apply(scale_function))
 dax['PCA_1'] = pca.transform(-data)
 
+# 对比，DAX指数和PCA_1指数
 import matplotlib.pyplot as plt
 get_ipython().magic(u'matplotlib inline')
 dax.apply(scale_function).plot(figsize=(8, 4))
 
-
-
+# 5个主成分
 pca = KernelPCA(n_components=5).fit(data.apply(scale_function))
 pca_components = pca.transform(-data)
+# 加权平均
 weights = get_we(pca.lambdas_)
 dax['PCA_5'] = np.dot(pca_components, weights)
 
+# 对比，DAX指数，PCA_1指数，PCA_5指数
 import matplotlib.pyplot as plt
 get_ipython().magic(u'matplotlib inline')
 dax.apply(scale_function).plot(figsize=(8, 4))
 
+# 将index转换为matplot兼容的时间格式
 import matplotlib as mpl
 mpl_dates = mpl.dates.date2num(data.index.to_pydatetime())
 mpl_dates
 
-
+# 散点图，表现日期
 plt.figure(figsize=(8, 4))
 plt.scatter(dax['PCA_5'], dax['^GDAXI'], c=mpl_dates)
 lin_reg = np.polyval(np.polyfit(dax['PCA_5'],
@@ -126,7 +133,8 @@ plt.xlabel('PCA_5')
 plt.ylabel('^GDAXI')
 plt.colorbar(ticks=mpl.dates.DayLocator(interval=250),
                 format=mpl.dates.DateFormatter('%d %b %y'))
-                
+
+# 根据断裂期，将时间段分为两段
 cut_date = '2011/7/1'
 early_pca = dax[dax.index < cut_date]['PCA_5']
 early_reg = np.polyval(np.polyfit(early_pca,
@@ -138,7 +146,7 @@ late_reg = np.polyval(np.polyfit(late_pca,
                 dax['^GDAXI'][dax.index >= cut_date], 1),
                 late_pca)
 
-
+# 分为两段后，拟合效果提高
 plt.figure(figsize=(8, 4))
 plt.scatter(dax['PCA_5'], dax['^GDAXI'], c=mpl_dates)
 plt.plot(early_pca, early_reg, 'r', lw=3)
