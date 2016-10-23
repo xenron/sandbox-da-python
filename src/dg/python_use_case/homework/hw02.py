@@ -5,16 +5,20 @@
 
 #读取数据
 import pandas as pd
-data=pd.read_excel(u'd:/data/example02/sample.xls',index_col=u'站点编号')
+data=pd.read_excel(u'd:/tmp/hw02-data2.xlsx',index_col=u'index')
 data.head()
 
-
 #数据预处理
+data_in = pd.DataFrame(data[data.type=='in'][['rush','no-rush','station']])
+data_in.columns = ['rush-in','no-rush-in','station']
+data_out = pd.DataFrame(data[data.type=='out'][['rush','no-rush','station']])
+data_out.columns = ['rush-out','no-rush-out','station']
+data = data_in.merge(data_out)
+data.index = data['station']
+data = data[['rush-in','no-rush-in','rush-out','no-rush-out']]
+
 data = (data - data.min())/(data.max() - data.min()) #离差标准化
 data=data.fillna(0)  #处理na值
-
-data.to_excel('d:/data/example02/standata.xls',index=True) #保存结果
-
 
 ####模型构建####
 ##系谱图绘制
@@ -44,8 +48,7 @@ r.columns = list(data.columns) + [u'聚类类别'] #重命名表头
 import matplotlib.pyplot as plt
 
 style = ['ro-', 'go-', 'bo-']
-xlabels = [u'非上下班时段日均客流量', u'上下班时段日均客流量', u'周末日均客流量时间', 
-u'工作日日均客流量']
+xlabels = [u'上下班时间段进站日均人数', u'上下班时间段出站日均人数', u'非上下班时间段进站日均人数', u'非上下班时间段出站日均人数']
 pic_output = 'd:/data/example02/type_' #聚类图文件名前缀
 
 for i in range(k): #逐一作图，作出不同样式
