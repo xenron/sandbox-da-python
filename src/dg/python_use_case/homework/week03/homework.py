@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# 对data2.csv进行变量筛选，并构建预测模型
+
 #加载所需的库
 import numpy as np
 import pandas as pd

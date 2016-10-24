@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+# 模拟生成几何布朗运动、扩散跳跃、平方跟扩散的随机过程
+
 import numpy as np
 import numpy.random as npr
 import matplotlib.pyplot as plt
