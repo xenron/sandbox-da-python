@@ -4,17 +4,8 @@
 import pandas as pd
 
 #读入数据
-custinfo = pd.read_csv(r'd:/data/example04/custinfo.csv')
-custcall = pd.read_csv(r'd:/data/example04/custcall.csv')
+data=pd.read_excel(u'D:/tmp/github/my/sandbox-da-python/src/dg/python_use_case/homework/week04/data.xls',index_col=u'MEMBER_NO')
 
-#数据聚合
-custcall2 = custcall.groupby(custcall['Customer_ID']).mean()
-custcall3 = custcall2.drop('month', 1)
-
-#数据合并
-data = pd.merge(custinfo,custcall3,left_on='Customer_ID',right_index=True)
-data.index = data['Customer_ID']
-data = data.drop('Customer_ID',1)
 
 ###数据探索###
 import matplotlib.pyplot as plt
