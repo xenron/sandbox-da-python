@@ -26,7 +26,7 @@ def randomtest(data):
 ###数据集初始化###
 
 #排序
-bh1 = pd.read_csv("D:/data/bh1.csv",header=None)
+bh1 = pd.read_csv("D:/tmp/bh1.csv",header=None)
 #bh1=bh1.ix[:100]
 N = bh1.shape[0]
 n = bh1.shape[1]
@@ -44,54 +44,54 @@ a=0
 b=N
 
 ##循环
-while i<n:
-    while i<=j and j<n:
-            if (mark[i]==0).all():
-                R=randomtest(bh1.iloc[a:b,j])
-                if(R==np.nan): 
-                    break
-                elif(R==0):
-                    i=i+1
-                    j=i
-                    continue
-                else:
-                    mark[i][0,j]=1
-                    for c in range(N)[1:]:
-                        if bh1.iloc[c,j]!=bh1.iloc[c-1,j]:
-                            mark[i][c,j]=1
-#                        else:
-#                            mark[i][c,j]=0
-                    j=j+1
-            if(not(mark[i]==0).all()):
-                if(j<n):
-                    kj=np.sum(mark[i][:,j-1]==1)
-                    s=bh1[mark[i][:,j-1]==1].index
-                    for k in range(kj):
-                        a=s[k]
-                        if k==kj-1:
-                            b=N
-                        else:
-                            b=s[k+1]
-                        R=randomtest(bh1.iloc[a:b,j])
-                        if R==1:
-                            mark[i][a,j]=1
-                            for c in range(b)[a+1:]:
-                                if bh1.iloc[c,j]!=bh1.iloc[c-1,j]:
-                                    mark[i][c,j]=1
-                                    if mark[i][c,j-1]==0:
-                                        mark[i][c,j-1]=1
-    #                            else:
-    #                                mark[i][c,j]=0
-            
-                        elif  R==0:
-                            mark[i][a:b,j]=np.nan
-                        else:
-                            mark[i][a:b,j:n]=np.nan
-                        j=j+1
-    i=i+1
-    j=i
-    a=0
-    b=N
+while i < n:
+    while i <= j and j < n:
+        if (mark[i] == 0).all():
+            R = randomtest(bh1.iloc[a:b, j])
+            if (R == np.nan):
+                break
+            elif (R == 0):
+                i = i + 1
+                j = i
+                continue
+            else:
+                mark[i][0, j] = 1
+                for c in range(N)[1:]:
+                    if bh1.iloc[c, j] != bh1.iloc[c - 1, j]:
+                        mark[i][c, j] = 1
+#                    else:
+#                        mark[i][c,j]=0
+                j = j + 1
+        if (not (mark[i] == 0).all()):
+            if (j < n):
+                kj = np.sum(mark[i][:, j - 1] == 1)
+                s = bh1[mark[i][:, j - 1] == 1].index
+                for k in range(kj):
+                    a = s[k]
+                    if k == kj - 1:
+                        b = N
+                    else:
+                        b = s[k + 1]
+                    R = randomtest(bh1.iloc[a:b, j])
+                    if R == 1:
+                        mark[i][a, j] = 1
+                        for c in range(b)[a + 1:]:
+                            if bh1.iloc[c, j] != bh1.iloc[c - 1, j]:
+                                mark[i][c, j] = 1
+                                if mark[i][c, j - 1] == 0:
+                                    mark[i][c, j - 1] = 1
+#                                else:
+#                                    mark[i][c,j]=0
+
+                    elif R == 0:
+                        mark[i][a:b, j] = np.nan
+                    else:
+                        mark[i][a:b, j:n] = np.nan
+                    j = j + 1
+    i = i + 1
+    j = i
+    a = 0
+    b = N
     
     
 #regular列表
