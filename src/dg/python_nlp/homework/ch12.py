@@ -52,5 +52,20 @@ print nltk.to_sfm_string(lexicon[53])
 
 # 写一个程序，找出所有出现少于10 次的词性（ps 字段）。或许有打字错误？
 
+from nltk.corpus import toolbox
+import itertools
+import operator
+toolbox.entries('rotokas.dic')
+text = nltk.word_tokenize("And And now for something completely different")
+text_tag = nltk.pos_tag(text)
+text_tag = [(tag[1], 1)for tag in text_tag]
 
+def accumulate(l):
+    it = itertools.groupby(l, operator.itemgetter(0))
+    for key, subiter in it:
+       yield key, sum(item[1] for item in subiter) 
 
+field_times = list(accumulate(text_tag))
+
+if len(field_times) > 10:
+    print(field_times[10:])
